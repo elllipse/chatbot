@@ -1,0 +1,50 @@
+*
+	box-sizing: border-box
+body
+	font-family: "Arial", sans-serif
+.main
+	position: relative
+	max-width: 600px
+	margin: 20px auto
+	background-color: #e3e3e3
+	padding: 10px
+#chat-window
+	width: 100%
+	input[type="text"]
+		width: 73%
+		border: 2px solid #1abc9c
+		padding: 5px
+		height: 30px
+		&:focus
+			outline: none
+	input[type="checkbox"]
+		display: inline-block
+		margin-top: 10px
+		margin-bottom: 0
+		width: 15px
+		height: 15px
+	button
+		border: none
+		background: #1abc9c
+		color: #fff
+		font-weight: bold
+		height: 30px
+		width: 27%
+		vertical-align: bottom
+		text-transform: uppercase
+		margin-left: -5px
+		cursor: pointer
+		outline: none
+		&:hover
+			background-color: #18A98C
+		&:active
+			box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5)
+#chat-display
+	width: 100%
+	height: 500px
+	background-color: #FFF
+	margin-bottom: 10px
+	padding: 10px
+	overflow-y: scroll
+.user-msg
+	margin: 10px 0	
