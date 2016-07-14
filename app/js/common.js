@@ -31,7 +31,7 @@ $(function() {
 		var currentMinutes = get24Styled( currentTime.getMinutes() );
 
 		function get24Styled(time) {
-			return time < 9 ? '0' + time : time;
+			return time <= 9 ? '0' + time : time;
 		}
 
 		return {
