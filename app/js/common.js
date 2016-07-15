@@ -15,15 +15,16 @@ $(function() {
 	function inputKeypress(e) {
 		if (enterSendCheck.checked) {
 			if (e.which === 13) {
-				postMsg();
+				sendButtonClick();
 			}	
 		}
 	}
 
 	function sendButtonClick() {
-		postMsg();
+		postMsg(userName, getMsg());
 		$msgInput.focus();
-	};
+		aiReact();
+	}
 
 	function getTime() {
 		var currentTime = new Date();
@@ -43,22 +44,38 @@ $(function() {
 		}
 	}
 
-	function postMsg() {
+	function getMsg() {
 		var msg = $msgInput.val();
 		$msgInput.val('');
 
-		if (!msg) {	return;}
+		return msg;
+	}
 
-		var newPost = '<p class="user-msg">' +
-		'<span class="post-time">'+ '[' + getTime().fullTime() + ']' +'</span>' +
-		'<span class="user-name">'+ userName + ':' +'</span>'+
-		msg +
-		'</p>';
-		$chatDisplay.append(newPost);
+	function postMsg(user, text) {
+
+		if (!text) {return;}
+
+		var $newPost = $('<p class="user-msg">' +
+							'<span class="post-time">'+ '[' + getTime().fullTime() + ']' +'</span>' +
+							'<span class="user-name">'+ user + ':' +'</span>'+
+							'<span class="user-text"></span>'+
+						'</p>');
+
+		$newPost.children('.user-text').text(text);		
+		$chatDisplay.append($newPost);
 
 		//scroll window to last message
 		var scrollValue = $chatDisplay[0].scrollHeight;
 		$chatDisplay.scrollTop(scrollValue);
+	}
+
+	function aiReact() {
+		var $lastMsg = $chatDisplay.find('.user-msg:last-child');
+		var lastMsgText = $lastMsg.find('.user-text').text();
+		
+		setTimeout(function() {
+			postMsg('Bot', lastMsgText + ' HaHahahahHA');
+		}, 2000);
 	}
 
 
