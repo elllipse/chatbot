@@ -7,6 +7,10 @@ $(function() {
 	var $chatDisplay = $('#chat-display');
 	var enterSendCheck = $('#enter-send')[0];
 
+	//Database json
+	var db = null;
+	getData();
+
 	var userName = /*prompt("Enter your name pls", "") ||*/ "You"; 
 
 	$sendButton.on("click", sendButtonClick);
@@ -21,9 +25,12 @@ $(function() {
 	}
 
 	function sendButtonClick() {
-		postMsg(userName, getMsg());
+		var isSended = postMsg(userName, getMsg());
 		$msgInput.focus();
-		aiReact();
+
+		if (isSended) {
+			aiReact();
+		}
 	}
 
 	function getTime() {
@@ -48,12 +55,13 @@ $(function() {
 		var msg = $msgInput.val();
 		$msgInput.val('');
 
+		if (!msg) return;
 		return msg;
 	}
 
 	function postMsg(user, text) {
 
-		if (!text) {return;}
+		if (!text) {return false;}//No sended msg. Return false for avoid AI react
 
 		var $newPost = $('<p class="user-msg">' +
 							'<span class="post-time">'+ '[' + getTime().fullTime() + ']' +'</span>' +
@@ -67,15 +75,51 @@ $(function() {
 		//scroll window to last message
 		var scrollValue = $chatDisplay[0].scrollHeight;
 		$chatDisplay.scrollTop(scrollValue);
+		//Msg sended. Return true for AI react
+		return true;
 	}
 
 	function aiReact() {
 		var $lastMsg = $chatDisplay.find('.user-msg:last-child');
 		var lastMsgText = $lastMsg.find('.user-text').text();
-		
+
+		var answer = aiResponse(lastMsgText);
+
 		setTimeout(function() {
-			postMsg('Bot', lastMsgText + ' HaHahahahHA');
-		}, 2000);
+			if (answer) {postMsg('Bot', answer);}
+			else {postMsg('Bot', 'write something else...');}
+			console.log(allWords);
+		}, 1000);
+	}
+
+	function aiResponse(question) {
+		var longestKey = '';
+		var answer;
+		var answerIndex = 0;
+
+		for (var key in db) {
+			var index = question.indexOf(key);
+			if ( index > -1 && key.length > longestKey.length) {
+				longestKey = key;
+			}
+		}
+
+		if (longestKey) {
+			answer = db[longestKey];
+			answerIndex = Math.ceil( Math.random() * Object.keys(db[longestKey]).length );
+			return answer[answerIndex];
+		};
+	}
+
+	function getData() {
+		$.ajax({
+			url: '../api/data.json',
+			type: 'GET',
+			data: {param1: 'value1'},
+			success: function(data) {
+				db = data;
+			}
+		})
 	}
 
 
