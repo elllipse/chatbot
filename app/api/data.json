@@ -1,4 +1,7 @@
 {
-  "weather": { "1":"really good weather!", "2":"do you like the weather today?", "3":"Do you want to see forecast?"},
-  "friend": { "1":"you want to be my friend? ^_^", "2":"you are my best friend", "3":"i have a friend of mine looking exactly like you"}
+  "weather": { "1":"really good weather!", "2":"do you like the weather today?->Mee too", "3":"Do you want to see forecast?-><a href='http://weather.com' target='blank'>Weather.com</a>"},
+  "friend": { "1":"Are you want to be my friend? ^_^->Now you are", "2":"you are my best friend", "3":"i have a friend of mine looking exactly like you"},
+  "hello": { "1":"Hi there!", "2":"Hello!", "3":"Nice to meet you!"},
+  "time": { "1":"You need a current time?->*es*new Date()"},
+  "how are you": { "1":"Fine and you?", "2":"not soo bad", "3":"i am ok :) Thank you!"}
 }
