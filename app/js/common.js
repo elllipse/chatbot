@@ -2,10 +2,10 @@
 
 $(function() {
 
-	var $msgInput = $('#msg-input');
-	var $sendButton = $('#send-button');
-	var $chatDisplay = $('#chat-display');
-	var enterSendCheck = $('#enter-send')[0];
+	var $msgInput    = $('#msg-input'),
+		$sendButton  = $('#send-button'),
+		$chatDisplay = $('#chat-display'),
+		sendOnEnter  = $('#enter-send')[0];
 
 	//Database json
 	var db = null;
@@ -17,7 +17,7 @@ $(function() {
 	$msgInput.on("keypress", inputKeypress);
 
 	function inputKeypress(e) {
-		if (enterSendCheck.checked) {
+		if (sendOnEnter.checked) {
 			if (e.which === 13) {
 				sendButtonClick();
 			}	
@@ -34,17 +34,17 @@ $(function() {
 	}
 
 	function getTime() {
-		var currentTime = new Date();
-		var currentHours = get24Styled( currentTime.getHours() );
-		var currentMinutes = get24Styled( currentTime.getMinutes() );
+		var currentTime    = new Date(),
+			currentHours   = get24Styled( currentTime.getHours() ),
+			currentMinutes = get24Styled( currentTime.getMinutes() );
 
 		function get24Styled(time) {
 			return time <= 9 ? '0' + time : time;
 		}
 
 		return {
-			hours : currentHours,
-			minutes : currentMinutes,
+			hours    : currentHours,
+			minutes  : currentMinutes,
 			fullTime : function() {
 				return this.hours + ":" + this.minutes;
 			}
@@ -80,22 +80,20 @@ $(function() {
 	}
 
 	function aiReact() {
-		var $lastMsg = $chatDisplay.find('.user-msg:last-child');
-		var lastMsgText = $lastMsg.find('.user-text').text();
-
-		var answer = aiResponse(lastMsgText);
+		var $lastMsg    = $chatDisplay.find('.user-msg:last-child'),
+			lastMsgText = $lastMsg.find('.user-text').text(),
+			answer      = aiResponse(lastMsgText);
 
 		setTimeout(function() {
 			if (answer) {postMsg('Bot', answer);}
 			else {postMsg('Bot', 'write something else...');}
-			console.log(allWords);
 		}, 1000);
 	}
 
 	function aiResponse(question) {
-		var longestKey = '';
-		var answer;
-		var answerIndex = 0;
+		var longestKey = '',
+			answer,
+			answerIndex;
 
 		for (var key in db) {
 			var index = question.indexOf(key);
